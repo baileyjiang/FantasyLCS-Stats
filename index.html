@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>League of Legends - Professional Standings for All Leagues</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="bower_components\angular\angular.js"></script>
+    <script src="bower_components\angular-bootstrap\ui-bootstrap.js"></script>
+    <script src="bower_components\angular-modal-service\dst\angular-modal-service.min.js"></script>  
+    <script src="js\lcs.js"></script>
+    <script src="js\lcs-controllers.js"></script>
+</head>
+<body ng-app="app" ng-controller="MainController">
+<div class="container">
+	<h1>{{main.title}}</h1>
+	<div class="input-group">
+		<span class="input-group-addon">
+			<span class="glyphicon glyphicon-search"></span>
+		</span>
+		<input type="text" class="formcontrol" ng-model="searchInput">
+	</div>
+
+	<h3>North American League Championship Teams</h3>
+	<ul ng-controller="teamCtrl" class="list-group">
+			<li class="list-group-item" ng-repeat="team in teams | orderBy:team.teamRankreverse | filter:main.searchInput" ng-click="getTeamStats(team.teamId)">
+				<a href ng-click="toShow = !toShow"> {{team.teamTitle}} </a>
+				<span class="badge">{{team.wins}}-{{team.losses}}</span>
+				<div ng-show="toShow" ng-controller="playerCtrl">
+					<ul class="list-group">
+						<li ng-repeat="player in players.roster | orderBy:player.playerIdreverse" class="list-group-item">
+							<span class="glyphicon glyphicon-star" ng-if="player.isStarter"></span>
+							<a href ng-click="open()">{{player.name}}</a>
+							<span class="badge">{{player.role}}</span>
+						</li>
+					</ul>
+				</div>
+			</li>
+	</ul>
+	
+	<button class="btn btn-default"  ng-controller="playerCtrl" ng-click="open('lg')">Open me!</button>
+	<!--<select class="form-control pull-right" ng-model="main.order" ng-options="order as order.title for order in main.orders"></select>
+ 	 <p>{{main.searchInput}}</p> -->
+</div>
+</body>
+</html>
